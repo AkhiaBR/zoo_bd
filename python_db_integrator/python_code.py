@@ -59,7 +59,7 @@ def cadastrar():
         comando_sql = f'INSERT INTO lojas (Nome, Servico, Horario) VALUES ("{nome}", "{servico}", {horario})'
     elif opcao == 6:
         nome = input("Nome do Visitante: ")
-        datavisita = input("Data da Visita ( Dia-Mês-Ano ): ")
+        datavisita = input("Data da Visita ( Dia-Mês-Ano): ")
         idingresso = int(input("ID do Ingresso: "))
         receita = float(input("Receita: "))
         email = input("Email: ")
@@ -179,5 +179,3 @@ while True:
         break
     else:
         print("ERRO: Valor digitado inválido. Tente novamente...")
-
-        
