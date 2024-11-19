@@ -43,6 +43,44 @@ def main_window():
 
     window.mainloop() # fim dos comandos para a janela
 
+# JANELAS SQL INSERTION
+def CAD_ANIMAL():
+    def voltar():
+        window_cadastro.destroy()
+        main_window()
+
+    window.destroy()
+
+    window_animal_criar = Tk()
+
+    window_animal_criar.title("The Gurizes Development LTDA - Painel de Cadastro ANIMAL")
+    window_animal_criar.geometry("900x600")
+    window_animal_criar.resizable(width=False,height=False)
+    window_animal_criar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_criar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_criar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    menu_label = Label(window_animal_criar, text="O QUE VOCÊ DESEJA CADASTRAR?", font=("Century Gothic", 20, "bold"), width=30 , bg="darkorange", fg="black")
+    menu_label.pack(pady=(30,0)) # utilizei somente o pack() para centralizar / padding Y, primeiro valor top, segundo valor bottom
+
+    bottom_frame = Frame(window_animal_criar, width=900, height=70, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    window_animal_criar.mainloop()
+
 # JANELAS SECUNDÁRIAS
 def abrir_cadastro ():
     def voltar():
@@ -76,17 +114,17 @@ def abrir_cadastro ():
     menu_label = Label(window_cadastro, text="O QUE VOCÊ DESEJA CADASTRAR?", font=("Century Gothic", 20, "bold"), width=30 , bg="darkorange", fg="black")
     menu_label.pack(pady=(30,0)) # utilizei somente o pack() para centralizar / padding Y, primeiro valor top, segundo valor bottom
 
-    cad_button = Button(window_cadastro, text="ANIMAL", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="")
+    cad_button = Button(window_cadastro, text="ANIMAL", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=CAD_ANIMAL)
     cad_button.pack(pady=5)
-    alt_button = Button(window_cadastro, text="FUNCIONÁRIO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="")
+    alt_button = Button(window_cadastro, text="FUNCIONÁRIO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=CAD_FUNCIONARIO)
     alt_button.pack(pady=5)
-    ex_button = Button(window_cadastro, text="HABITAT", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="")
+    ex_button = Button(window_cadastro, text="HABITAT", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=CAD_HABITAT)
     ex_button.pack(pady=5)
-    pes_button = Button(window_cadastro, text="INGRESSO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="")
+    pes_button = Button(window_cadastro, text="INGRESSO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=CAD_INGRESSO)
     pes_button.pack(pady=5)
-    pes_button = Button(window_cadastro, text="LOJA", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="")
+    pes_button = Button(window_cadastro, text="LOJA", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=CAD_LOJA)
     pes_button.pack(pady=5)
-    pes_button = Button(window_cadastro, text="VISITANTE", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="")
+    pes_button = Button(window_cadastro, text="VISITANTE", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=CAD_VISITANTE)
     pes_button.pack(pady=5)
 
     bottom_frame = Frame(window_cadastro, width=900, height=70, bg="black", relief="raised")
