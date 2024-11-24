@@ -1,6 +1,15 @@
 # IMPORT DAS BIBLIOTECAS
 from tkinter import *
 from tkinter import messagebox
+import mysql.connector # importa a função de import do conector mysql
+
+conexao_banco = mysql.connector.connect( # especifica a conexão com o database determinado
+    host = "127.0.0.1",
+    user = "root",
+    password = "ZOO_89",
+    database = "zoologico"
+)
+cursor = conexao_banco.cursor()
 
 # JANELA PRINCIPAL
 def main_window():
@@ -252,6 +261,25 @@ def CAD_ANIMAL():
         window_animal_criar.destroy()
         main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
 
+    def sql_animal_cad(): # sempre em cima
+        nome = nome_entry.get()
+        especie = especie_entry.get()
+        genero = genero_entry.get()
+        datanasc = datanasc_entry.get()
+        origem = origem_entry.get()
+        saude = saude_entry.get()
+        alimentacao = alimentacao_entry.get()
+        id_habitat = id_habitat_entry.get()
+
+        comando_sql = f'''INSERT INTO animais (Nome, Especie, Genero, Datanasc, Origem, Saúde, Alimentacao, Idhabitat) 
+                    VALUES ("{nome}", "{especie}", "{genero}", "{datanasc}", "{origem}", "{saude}", "{alimentacao}", "{id_habitat}")'''
+
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
     window_cadastro.destroy()
 
     global window_animal_criar
@@ -277,12 +305,8 @@ def CAD_ANIMAL():
     back_label = Button(window_animal_criar, image=back_image, bg="darkorange", command=voltar)
     back_label.place(x=40, y=180)
 
-    id_label = Label(window_animal_criar, text="ID: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
-    id_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
-    id_entry = Entry(window_animal_criar, width=30)
-    id_entry.pack()
     nome_label = Label(window_animal_criar, text="Nome: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
-    nome_label.pack()
+    nome_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
     nome_entry = Entry(window_animal_criar, width=30)
     nome_entry.pack()
     especie_label = Label(window_animal_criar, text="Espécie: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
@@ -309,43 +333,17 @@ def CAD_ANIMAL():
     alimentacao_label.pack()
     alimentacao_entry = Entry(window_animal_criar, width=30)
     alimentacao_entry.pack()
-    id_habitat_label = Label(window_animal_criar, text="ID do habitat: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    id_habitat_label = Label(window_animal_criar, text="ID do Habitat: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
     id_habitat_label.pack()
     id_habitat_entry = Entry(window_animal_criar, width=30)
     id_habitat_entry.pack()
 
     bottom_frame = Frame(window_animal_criar, width=900, height=70, bg="black", relief="raised")
     bottom_frame.pack(side=BOTTOM)
-    submit_botao = Button(bottom_frame, text="CADASTRAR", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="sql_animal_cad") # CAD_LOJA
-    submit_botao.pack(pady=5)
 
-    def sql_animal_cad():
-        import mysql.connector # importa a função de import do conector mysql
+    submit_botao = Button(window_animal_criar, text="CADASTRAR", font=("Century Gothic", 5, "bold"), width=10 , bg="black", fg="darkorange", relief="raised", command=sql_animal_cad)
+    submit_botao.pack()
 
-        conexao_banco = mysql.connector.connect( # especifica a conexão com o database determinado
-            host = "127.0.0.1",
-            user = "root",
-            password = "",
-            database = "COLOCARDATABASEAQUI"
-        )
-        cursor = conexao_banco.cursor()
-
-        id_animal = id_habitat_entry.get()
-        nome = nome_entry.get()
-        especie = especie_entry.get()
-        genero = genero_entry.get()
-        datanasc = datanasc_entry.get()
-        origem = origem_entry.get()
-        saude = saude_entry.get()
-        alimentacao = alimentacao_entry.get()
-        id_habitat = id_habitat_entry.get()
-
-        comando_sql = f'''INSERT INTO animais (Nome, Especie, Genero, Datanasc, Origem, Saúde, Alimentacao, Idhabitat) 
-                          VALUES ("{nome}", "{especie}", "{genero}", "{datanasc}", "{origem}", "{saude}", "{alimentacao}", {id_habitat})'''
-
-        cursor.execute(comando_sql)
-        conexao_banco.commit()
-        
     window_animal_criar.mainloop()
 
 main_window()

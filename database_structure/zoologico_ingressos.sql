@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: zoologico
 -- ------------------------------------------------------
--- Server version	5.5.20-log
+-- Server version	8.0.40
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,12 +23,12 @@ DROP TABLE IF EXISTS `ingressos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ingressos` (
-  `Id` int(5) NOT NULL,
+  `Id` int NOT NULL AUTO_INCREMENT,
   `Tipo` varchar(50) NOT NULL,
-  `Preco` int(6) NOT NULL,
+  `Preco` int NOT NULL,
   `Datavalidade` date NOT NULL,
-  `Quantidade` int(5) NOT NULL,
-  `Desconto` int(6) NOT NULL,
+  `Quantidade` int NOT NULL,
+  `Desconto` int NOT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-29 17:08:17
+-- Dump completed on 2024-11-24  3:17:48
