@@ -28,12 +28,11 @@ CREATE TABLE `animais` (
   `Especie` varchar(45) NOT NULL,
   `Genero` varchar(45) NOT NULL,
   `Datanasc` date NOT NULL,
-  `Datachegada` date NOT NULL,
   `Origem` varchar(45) NOT NULL,
   `Saúde` varchar(45) NOT NULL,
   `Alimentacao` varchar(45) NOT NULL,
   `Idhabitat` varchar(45) NOT NULL,
-  PRIMARY KEY (`Id`)
+  PRIMARY KEY (`Id`) FOREIGN KEY (`Idhabitat`) REFERENCES `habitat` (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
