@@ -88,15 +88,15 @@ def abrir_cadastro ():
 
     animal_button = Button(window_cadastro, text="ANIMAL", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=CAD_ANIMAL)
     animal_button.pack(pady=5)
-    func_button = Button(window_cadastro, text="FUNCIONÁRIO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_FUNCIONARIO
+    func_button = Button(window_cadastro, text="FUNCIONÁRIO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=CAD_FUNCIONARIO) # CAD_FUNCIONARIO
     func_button.pack(pady=5)
-    hab_button = Button(window_cadastro, text="HABITAT", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_HABITAT
+    hab_button = Button(window_cadastro, text="HABITAT", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=CAD_HABITAT) # CAD_HABITAT
     hab_button.pack(pady=5)
-    ing_button = Button(window_cadastro, text="INGRESSO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_INGRESSO
+    ing_button = Button(window_cadastro, text="INGRESSO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=CAD_INGRESSO) # CAD_INGRESSO
     ing_button.pack(pady=5)
-    loja_button = Button(window_cadastro, text="LOJA", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_LOJA
+    loja_button = Button(window_cadastro, text="LOJA", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=CAD_LOJA) # CAD_LOJA
     loja_button.pack(pady=5)
-    vis_button = Button(window_cadastro, text="VISITANTE", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_VISITANTE
+    vis_button = Button(window_cadastro, text="VISITANTE", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=CAD_VISITANTE) # CAD_VISITANTE
     vis_button.pack(pady=5)
 
     bottom_frame = Frame(window_cadastro, width=900, height=70, bg="black", relief="raised")
@@ -341,8 +341,448 @@ def CAD_ANIMAL():
     bottom_frame = Frame(window_animal_criar, width=900, height=70, bg="black", relief="raised")
     bottom_frame.pack(side=BOTTOM)
 
-    submit_botao = Button(window_animal_criar, text="CADASTRAR", font=("Century Gothic", 5, "bold"), width=10 , bg="black", fg="darkorange", relief="raised", command=sql_animal_cad)
-    submit_botao.pack()
+    submit_botao = Button(window_animal_criar, text="CADASTRAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_cad)
+    submit_botao.pack(pady=10)
+
+    window_animal_criar.mainloop()
+
+def CAD_FUNCIONARIO():
+    def voltar():
+        window_animal_criar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    def sql_animal_cad(): # sempre em cima
+        nome = nome_entry.get()
+        cargo = cargo_entry.get()
+        datacontratacao = datacontratacao_entry.get()
+        email = email_entry.get()
+        telefone = telefone_entry.get()
+
+        comando_sql = f'''INSERT INTO funcionarios (Nome, Cargo, Datacontratacao, Email, Telefone) 
+                    VALUES ("{nome}", "{cargo}", "{datacontratacao}", "{email}", "{telefone}")'''
+
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
+    window_cadastro.destroy()
+
+    global window_animal_criar
+    window_animal_criar = Tk()
+
+    window_animal_criar.title("The Gurizes Development LTDA - Painel de Cadastro: FUNCIONÁRIO")
+    window_animal_criar.geometry("900x600")
+    window_animal_criar.resizable(width=False,height=False)
+    window_animal_criar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_criar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_criar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    nome_label = Label(window_animal_criar, text="Nome: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    nome_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    nome_entry = Entry(window_animal_criar, width=30)
+    nome_entry.pack()
+    cargo_label = Label(window_animal_criar, text="Cargo: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    cargo_label.pack()
+    cargo_entry = Entry(window_animal_criar, width=30)
+    cargo_entry.pack()
+    datacontratacao_label = Label(window_animal_criar, text="Data de Contratação: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    datacontratacao_label.pack()
+    datacontratacao_entry = Entry(window_animal_criar, width=30)
+    datacontratacao_entry.pack()
+    email_label = Label(window_animal_criar, text="E-mail: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    email_label.pack()
+    email_entry = Entry(window_animal_criar, width=30)
+    email_entry.pack()
+    telefone_label = Label(window_animal_criar, text="Telefone: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    telefone_label.pack()
+    telefone_entry = Entry(window_animal_criar, width=30)
+    telefone_entry.pack()
+
+    bottom_frame = Frame(window_animal_criar, width=900, height=70, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    submit_botao = Button(window_animal_criar, text="CADASTRAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_cad)
+    submit_botao.pack(pady=10)
+
+    window_animal_criar.mainloop()
+
+def CAD_HABITAT():
+    def voltar():
+        window_animal_criar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    def sql_animal_cad(): # sempre em cima
+        tipo = tipo_entry.get()
+        tamanho = tamanho_entry.get()
+        clima = clima_entry.get()
+
+        comando_sql = f'''INSERT INTO habitat (Tipo, Tamanho, Clima) 
+                    VALUES ("{tipo}", "{tamanho}", "{clima}")'''
+
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
+    window_cadastro.destroy()
+
+    global window_animal_criar
+    window_animal_criar = Tk()
+
+    window_animal_criar.title("The Gurizes Development LTDA - Painel de Cadastro: HABITAT")
+    window_animal_criar.geometry("900x600")
+    window_animal_criar.resizable(width=False,height=False)
+    window_animal_criar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_criar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_criar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    tipo_label = Label(window_animal_criar, text="Tipo: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    tipo_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    tipo_entry = Entry(window_animal_criar, width=30)
+    tipo_entry.pack()
+    tamanho_label = Label(window_animal_criar, text="Tamanho (m²): ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    tamanho_label.pack()
+    tamanho_entry = Entry(window_animal_criar, width=30)
+    tamanho_entry.pack()
+    clima_label = Label(window_animal_criar, text="Clima: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    clima_label.pack()
+    clima_entry = Entry(window_animal_criar, width=30)
+    clima_entry.pack()
+
+    bottom_frame = Frame(window_animal_criar, width=900, height=70, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    submit_botao = Button(window_animal_criar, text="CADASTRAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_cad)
+    submit_botao.pack(pady=10)
+
+    window_animal_criar.mainloop()
+
+def CAD_INGRESSO():
+    def voltar():
+        window_animal_criar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    def sql_animal_cad(): # sempre em cima
+        tipo = tipo_entry.get()
+        preco = preco_entry.get()
+        datavalidade = datavalidade_entry.get()
+        quantidade = quantidade_entry.get()
+        desconto = desconto_entry.get()
+
+        comando_sql = f'''INSERT INTO ingressos (Tipo, Preco, Datavalidade, Quantidade, Desconto) 
+                    VALUES ("{tipo}","{preco}", "{datavalidade}", "{quantidade}", "{desconto}")'''
+
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
+    window_cadastro.destroy()
+
+    global window_animal_criar
+    window_animal_criar = Tk()
+
+    window_animal_criar.title("The Gurizes Development LTDA - Painel de Cadastro: INGRESSO")
+    window_animal_criar.geometry("900x600")
+    window_animal_criar.resizable(width=False,height=False)
+    window_animal_criar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_criar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_criar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    tipo_label = Label(window_animal_criar, text="Tipo: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    tipo_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    tipo_entry = Entry(window_animal_criar, width=30)
+    tipo_entry.pack()
+    preco_label = Label(window_animal_criar, text="Preço: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    preco_label.pack()  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    preco_entry = Entry(window_animal_criar, width=30)
+    preco_entry.pack()
+    datavalidade_label = Label(window_animal_criar, text="Data de Validade: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    datavalidade_label.pack()
+    datavalidade_entry = Entry(window_animal_criar, width=30)
+    datavalidade_entry.pack()
+    quantidade_label = Label(window_animal_criar, text="Quantidade: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    quantidade_label.pack()
+    quantidade_entry = Entry(window_animal_criar, width=30)
+    quantidade_entry.pack()
+    desconto_label = Label(window_animal_criar, text="Desconto(%): ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    desconto_label.pack()
+    desconto_entry = Entry(window_animal_criar, width=30)
+    desconto_entry.pack()
+
+    bottom_frame = Frame(window_animal_criar, width=900, height=70, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    submit_botao = Button(window_animal_criar, text="CADASTRAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_cad)
+    submit_botao.pack(pady=10)
+
+    window_animal_criar.mainloop()
+
+def CAD_LOJA():
+    def voltar():
+        window_animal_criar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    def sql_animal_cad(): # sempre em cima
+        nome = nome_entry.get()
+        servico = servico_entry.get()
+        horario = horario_entry.get()
+        receita = receita_entry.get()
+        email = email_entry.get()
+        telefone = telefone_entry.get()
+
+        comando_sql = f'''INSERT INTO lojas (Nome, Servico, Horario, Receita, Email, Telefone) 
+                    VALUES ("{nome}","{servico}", "{horario}", "{receita}", "{email}","{telefone}")'''
+
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
+    window_cadastro.destroy()
+
+    global window_animal_criar
+    window_animal_criar = Tk()
+
+    window_animal_criar.title("The Gurizes Development LTDA - Painel de Cadastro: INGRESSO")
+    window_animal_criar.geometry("900x600")
+    window_animal_criar.resizable(width=False,height=False)
+    window_animal_criar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_criar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_criar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    nome_label = Label(window_animal_criar, text="Nome: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    nome_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    nome_entry = Entry(window_animal_criar, width=30)
+    nome_entry.pack()
+    servico_label = Label(window_animal_criar, text="Serviço: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    servico_label.pack()  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    servico_entry = Entry(window_animal_criar, width=30)
+    servico_entry.pack()
+    horario_label = Label(window_animal_criar, text="Horas Operadas: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    horario_label.pack()
+    horario_entry = Entry(window_animal_criar, width=30)
+    horario_entry.pack()
+    receita_label = Label(window_animal_criar, text="Receita (Mensal): ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    receita_label.pack()
+    receita_entry = Entry(window_animal_criar, width=30)
+    receita_entry.pack()
+    email_label = Label(window_animal_criar, text="E-mail: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    email_label.pack()
+    email_entry = Entry(window_animal_criar, width=30)
+    email_entry.pack()
+    telefone_label = Label(window_animal_criar, text="Telefone: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    telefone_label.pack()
+    telefone_entry = Entry(window_animal_criar, width=30)
+    telefone_entry.pack()
+
+    bottom_frame = Frame(window_animal_criar, width=900, height=70, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    submit_botao = Button(window_animal_criar, text="CADASTRAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_cad)
+    submit_botao.pack(pady=10)
+
+    window_animal_criar.mainloop()
+
+def CAD_LOJA():
+    def voltar():
+        window_animal_criar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    def sql_animal_cad(): # sempre em cima
+        nome = nome_entry.get()
+        servico = servico_entry.get()
+        horario = horario_entry.get()
+        receita = receita_entry.get()
+        email = email_entry.get()
+        telefone = telefone_entry.get()
+
+        comando_sql = f'''INSERT INTO lojas (Nome, Servico, Horario, Receita, Email, Telefone) 
+                    VALUES ("{nome}","{servico}", "{horario}", "{receita}", "{email}","{telefone}")'''
+
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
+    window_cadastro.destroy()
+
+    global window_animal_criar
+    window_animal_criar = Tk()
+
+    window_animal_criar.title("The Gurizes Development LTDA - Painel de Cadastro: INGRESSO")
+    window_animal_criar.geometry("900x600")
+    window_animal_criar.resizable(width=False,height=False)
+    window_animal_criar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_criar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_criar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    nome_label = Label(window_animal_criar, text="Nome: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    nome_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    nome_entry = Entry(window_animal_criar, width=30)
+    nome_entry.pack()
+    servico_label = Label(window_animal_criar, text="Serviço: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    servico_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    servico_entry = Entry(window_animal_criar, width=30)
+    servico_entry.pack()
+    horario_label = Label(window_animal_criar, text="Horas Operadas: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    horario_label.pack()
+    horario_entry = Entry(window_animal_criar, width=30)
+    horario_entry.pack()
+    receita_label = Label(window_animal_criar, text="Receita (Mensal): ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    receita_label.pack()
+    receita_entry = Entry(window_animal_criar, width=30)
+    receita_entry.pack()
+    email_label = Label(window_animal_criar, text="E-mail: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    email_label.pack()
+    email_entry = Entry(window_animal_criar, width=30)
+    email_entry.pack()
+    telefone_label = Label(window_animal_criar, text="Telefone: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    telefone_label.pack()
+    telefone_entry = Entry(window_animal_criar, width=30)
+    telefone_entry.pack()
+
+    bottom_frame = Frame(window_animal_criar, width=900, height=70, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    submit_botao = Button(window_animal_criar, text="CADASTRAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_cad)
+    submit_botao.pack(pady=10)
+
+    window_animal_criar.mainloop()
+
+def CAD_VISITANTE():
+    def voltar():
+        window_animal_criar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    def sql_animal_cad(): # sempre em cima
+        nome = nome_entry.get()
+        datavisita = datavisita_entry.get()
+        idingresso = idingresso_entry.get()
+
+        comando_sql = f'''INSERT INTO visitantes (Nome, Datavisita, Idingresso) 
+                    VALUES ("{nome}","{datavisita}", "{idingresso}")'''
+
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
+    window_cadastro.destroy()
+
+    global window_animal_criar
+    window_animal_criar = Tk()
+
+    window_animal_criar.title("The Gurizes Development LTDA - Painel de Cadastro: INGRESSO")
+    window_animal_criar.geometry("900x600")
+    window_animal_criar.resizable(width=False,height=False)
+    window_animal_criar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_criar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_criar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    nome_label = Label(window_animal_criar, text="Nome: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    nome_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    nome_entry = Entry(window_animal_criar, width=30)
+    nome_entry.pack()
+    datavisita_label = Label(window_animal_criar, text="Data de Visita: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    datavisita_label.pack()  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    datavisita_entry = Entry(window_animal_criar, width=30)
+    datavisita_entry.pack()
+    idingresso_label = Label(window_animal_criar, text="ID do Ingresso: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    idingresso_label.pack()
+    idingresso_entry = Entry(window_animal_criar, width=30)
+    idingresso_entry.pack()
+
+    bottom_frame = Frame(window_animal_criar, width=900, height=70, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    submit_botao = Button(window_animal_criar, text="CADASTRAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_cad)
+    submit_botao.pack(pady=10)
 
     window_animal_criar.mainloop()
 
