@@ -1498,18 +1498,18 @@ def PES_ANIMAL():
     tree['columns'] = ('Id','Nome', 'Especie', 'Genero', 'Datanasc', 'Origem', 'Saúde', 'Alimentacao', 'Idhabitat')
 
     # Formatação das colunas
-    tree.column("Id", anchor=tk.CENTER, width=50)
-    tree.column("Nome", anchor=tk.CENTER, width=80)
-    tree.column("Especie", anchor=tk.CENTER, width=60)
+    tree.column("Id", anchor=tk.CENTER, width=30)
+    tree.column("Nome", anchor=tk.CENTER, width=70)
+    tree.column("Especie", anchor=tk.CENTER, width=70)
     tree.column("Genero", anchor=tk.CENTER, width=50)
-    tree.column("Datanasc", anchor=tk.CENTER, width=60)
+    tree.column("Datanasc", anchor=tk.CENTER, width=80)
     tree.column("Origem", anchor=tk.CENTER, width=60)
-    tree.column("Saúde", anchor=tk.CENTER, width=80)
+    tree.column("Saúde", anchor=tk.CENTER, width=70)
     tree.column("Alimentacao", anchor=tk.CENTER, width=80)
-    tree.column("Idhabitat", anchor=tk.CENTER, width=50)
+    tree.column("Idhabitat", anchor=tk.CENTER, width=40)
 
     # Cabeçalho das colunas
-    tree.heading("Id", text="ID_Animal", anchor=tk.CENTER)
+    tree.heading("Id", text="ID", anchor=tk.CENTER)
     tree.heading("Nome", text="Nome", anchor=tk.CENTER)
     tree.heading("Especie", text="Espécie", anchor=tk.CENTER)
     tree.heading("Genero", text="Gênero", anchor=tk.CENTER)
@@ -1517,7 +1517,7 @@ def PES_ANIMAL():
     tree.heading("Origem", text="Origem", anchor=tk.CENTER)
     tree.heading("Saúde", text="Saúde", anchor=tk.CENTER)
     tree.heading("Alimentacao", text="Alimentação", anchor=tk.CENTER)
-    tree.heading("Idhabitat", text="ID_Habitat", anchor=tk.CENTER)
+    tree.heading("Idhabitat", text="ID_H", anchor=tk.CENTER)
 
     for row in cursor:
         tree.insert('','end',values=row)
@@ -1528,7 +1528,7 @@ def PES_ANIMAL():
     bottom_frame.pack(side=BOTTOM)
 
     button_volt = Button(bottom_frame, text="VOLTAR PARA O MENU", font=("Century Gothic", 20), bg="darkorange", fg="black", command=voltar)
-    button_volt.place(x=300, y=20)
+    button_volt.place(x=295, y=20)
 
     window_animal_pesquisar.mainloop()
 
@@ -1571,11 +1571,11 @@ def PES_FUNCIONARIO():
 
     # Formatação das colunas
     tree.column("Id", anchor=tk.CENTER, width=30)
-    tree.column("Nome", anchor=tk.CENTER, width=80)
-    tree.column("Cargo", anchor=tk.CENTER, width=60)
-    tree.column("Datacontratacao", anchor=tk.CENTER, width=50)
-    tree.column("Email", anchor=tk.CENTER, width=60)
-    tree.column("Telefone", anchor=tk.CENTER, width=60)
+    tree.column("Nome", anchor=tk.CENTER, width=90)
+    tree.column("Cargo", anchor=tk.CENTER, width=70)
+    tree.column("Datacontratacao", anchor=tk.CENTER, width=80)
+    tree.column("Email", anchor=tk.CENTER, width=140)
+    tree.column("Telefone", anchor=tk.CENTER, width=70)
 
     # Cabeçalho das colunas
     tree.heading("Id", text="ID", anchor=tk.CENTER)
@@ -1594,7 +1594,7 @@ def PES_FUNCIONARIO():
     bottom_frame.pack(side=BOTTOM)
 
     button_volt = Button(bottom_frame, text="VOLTAR PARA O MENU", font=("Century Gothic", 20), bg="darkorange", fg="black", command=voltar)
-    button_volt.place(x=300, y=20)
+    button_volt.place(x=295, y=20)
 
     window_animal_pesquisar.mainloop()
 
@@ -1638,8 +1638,8 @@ def PES_HABITAT():
     # Formatação das colunas
     tree.column("Id", anchor=tk.CENTER, width=30)
     tree.column("Tipo", anchor=tk.CENTER, width=80)
-    tree.column("Tamanho", anchor=tk.CENTER, width=60)
-    tree.column("Clima", anchor=tk.CENTER, width=50)
+    tree.column("Tamanho", anchor=tk.CENTER, width=40)
+    tree.column("Clima", anchor=tk.CENTER, width=80)
 
     # Cabeçalho das colunas
     tree.heading("Id", text="ID", anchor=tk.CENTER)
@@ -1656,7 +1656,7 @@ def PES_HABITAT():
     bottom_frame.pack(side=BOTTOM)
 
     button_volt = Button(bottom_frame, text="VOLTAR PARA O MENU", font=("Century Gothic", 20), bg="darkorange", fg="black", command=voltar)
-    button_volt.place(x=300, y=20)
+    button_volt.place(x=295, y=20)
 
     window_animal_pesquisar.mainloop()
 
@@ -1699,11 +1699,11 @@ def PES_INGRESSOS():
 
     # Formatação das colunas
     tree.column("Id", anchor=tk.CENTER, width=30)
-    tree.column("Tipo", anchor=tk.CENTER, width=80)
-    tree.column("Preco", anchor=tk.CENTER, width=60)
-    tree.column("Datavalidade", anchor=tk.CENTER, width=50)
-    tree.column("Quantidade", anchor=tk.CENTER, width=60)
-    tree.column("Desconto", anchor=tk.CENTER, width=60)
+    tree.column("Tipo", anchor=tk.CENTER, width=70)
+    tree.column("Preco", anchor=tk.CENTER, width=70)
+    tree.column("Datavalidade", anchor=tk.CENTER, width=80)
+    tree.column("Quantidade", anchor=tk.CENTER, width=80)
+    tree.column("Desconto", anchor=tk.CENTER, width=70)
 
     # Cabeçalho das colunas
     tree.heading("Id", text="ID", anchor=tk.CENTER)
@@ -1722,7 +1722,7 @@ def PES_INGRESSOS():
     bottom_frame.pack(side=BOTTOM)
 
     button_volt = Button(bottom_frame, text="VOLTAR PARA O MENU", font=("Century Gothic", 20), bg="darkorange", fg="black", command=voltar)
-    button_volt.place(x=300, y=20)
+    button_volt.place(x=295, y=20)
 
     window_animal_pesquisar.mainloop()
 
@@ -1765,12 +1765,12 @@ def PES_LOJA():
 
     # Formatação das colunas
     tree.column("Id", anchor=tk.CENTER, width=30)
-    tree.column("Nome", anchor=tk.CENTER, width=80)
-    tree.column("Servico", anchor=tk.CENTER, width=60)
+    tree.column("Nome", anchor=tk.CENTER, width=90)
+    tree.column("Servico", anchor=tk.CENTER, width=70)
     tree.column("Horario", anchor=tk.CENTER, width=50)
-    tree.column("Receita", anchor=tk.CENTER, width=60)
-    tree.column("Email", anchor=tk.CENTER, width=60)
-    tree.column("Telefone", anchor=tk.CENTER, width=60)
+    tree.column("Receita", anchor=tk.CENTER, width=80)
+    tree.column("Email", anchor=tk.CENTER, width=140)
+    tree.column("Telefone", anchor=tk.CENTER, width=80)
 
     # Cabeçalho das colunas
     tree.heading("Id", text="ID", anchor=tk.CENTER)
@@ -1790,7 +1790,7 @@ def PES_LOJA():
     bottom_frame.pack(side=BOTTOM)
 
     button_volt = Button(bottom_frame, text="VOLTAR PARA O MENU", font=("Century Gothic", 20), bg="darkorange", fg="black", command=voltar)
-    button_volt.place(x=300, y=20)
+    button_volt.place(x=295, y=20)
 
     window_animal_pesquisar.mainloop()
 
@@ -1833,15 +1833,15 @@ def PES_VISITANTE():
 
     # Formatação das colunas
     tree.column("Id", anchor=tk.CENTER, width=30)
-    tree.column("Nome", anchor=tk.CENTER, width=80)
-    tree.column("Datavisita", anchor=tk.CENTER, width=60)
+    tree.column("Nome", anchor=tk.CENTER, width=90)
+    tree.column("Datavisita", anchor=tk.CENTER, width=80)
     tree.column("Idingresso", anchor=tk.CENTER, width=50)
 
     # Cabeçalho das colunas
     tree.heading("Id", text="ID", anchor=tk.CENTER)
     tree.heading("Nome", text="Nome", anchor=tk.CENTER)
     tree.heading("Datavisita", text="Data Vis.", anchor=tk.CENTER)
-    tree.heading("Idingresso", text="ID Ing.", anchor=tk.CENTER)
+    tree.heading("Idingresso", text="ID_Ing.", anchor=tk.CENTER)
 
     for row in cursor:
         tree.insert('','end',values=row)
@@ -1852,7 +1852,7 @@ def PES_VISITANTE():
     bottom_frame.pack(side=BOTTOM)
 
     button_volt = Button(bottom_frame, text="VOLTAR PARA O MENU", font=("Century Gothic", 20), bg="darkorange", fg="black", command=voltar)
-    button_volt.place(x=300, y=20)
+    button_volt.place(x=295, y=20)
 
     window_animal_pesquisar.mainloop()
 
