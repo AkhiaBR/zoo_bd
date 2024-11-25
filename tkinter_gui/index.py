@@ -162,6 +162,7 @@ def abrir_excluir ():
 
     window.destroy()
 
+    global window_excluir
     window_excluir = Tk()
 
     window_excluir.title("The Gurizes Development LTDA - Painel de Exclusão")
@@ -187,17 +188,17 @@ def abrir_excluir ():
     menu_label = Label(window_excluir, text="O QUE VOCÊ DESEJA EXCLUIR?", font=("Century Gothic", 20, "bold"), width=30 , bg="darkorange", fg="black")
     menu_label.pack(pady=(30,0)) # utilizei somente o pack() para centralizar / padding Y, primeiro valor top, segundo valor bottom
 
-    animal_button = Button(window_excluir, text="ANIMAL", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="")
+    animal_button = Button(window_excluir, text="ANIMAL", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=DEL_ANIMAL)
     animal_button.pack(pady=5)
-    func_button = Button(window_excluir, text="FUNCIONÁRIO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_FUNCIONARIO
+    func_button = Button(window_excluir, text="FUNCIONÁRIO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=DEL_FUNCIONARIO)
     func_button.pack(pady=5)
-    hab_button = Button(window_excluir, text="HABITAT", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_HABITAT
+    hab_button = Button(window_excluir, text="HABITAT", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=DEL_HABITAT)
     hab_button.pack(pady=5)
-    ing_button = Button(window_excluir, text="INGRESSO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_INGRESSO
+    ing_button = Button(window_excluir, text="INGRESSO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=DEL_INGRESSO)
     ing_button.pack(pady=5)
-    loja_button = Button(window_excluir, text="LOJA", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_LOJA
+    loja_button = Button(window_excluir, text="LOJA", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=DEL_LOJA) 
     loja_button.pack(pady=5)
-    vis_button = Button(window_excluir, text="VISITANTE", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_VISITANTE
+    vis_button = Button(window_excluir, text="VISITANTE", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=DEL_VISITANTE) 
     vis_button.pack(pady=5)
 
     bottom_frame = Frame(window_excluir, width=900, height=70, bg="black", relief="raised")
@@ -1134,5 +1135,324 @@ def ALT_VISITANTE():
     submit_botao.pack(pady=10)
 
     window_animal_alterar.mainloop()
+
+# JANELAS SQL INSERTION - DELETAR
+def DEL_ANIMAL():
+    def voltar():
+        window_animal_deletar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    def sql_animal_del(): # funcao sempre em cima
+        id_animal = id_animal_entry.get()
+
+        comando_sql = f'''DELETE FROM animais WHERE Id = {id_animal}'''
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
+    window_excluir.destroy()
+
+    global window_animal_deletar
+    window_animal_deletar = Tk()
+
+    window_animal_deletar.title("The Gurizes Development LTDA - Painel de Exclusão: ANIMAL")
+    window_animal_deletar.geometry("900x600")
+    window_animal_deletar.resizable(width=False,height=False)
+    window_animal_deletar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_deletar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_deletar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    id_animal_label = Label(window_animal_deletar, text="ID do Animal: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    id_animal_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    id_animal_entry = Entry(window_animal_deletar, width=30)
+    id_animal_entry.pack()
+
+    bottom_frame = Frame(window_animal_deletar, width=900, height=100, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    submit_botao = Button(window_animal_deletar, text="DELETAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_del)
+    submit_botao.pack(pady=10)
+
+    window_animal_deletar.mainloop()
+
+def DEL_FUNCIONARIO():
+    def voltar():
+        window_animal_deletar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    def sql_animal_del(): # funcao sempre em cima
+        id_funcionario = id_funcionario_entry.get()
+
+        comando_sql = f'''DELETE FROM funcionarios WHERE Id = {id_funcionario}'''
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
+    window_excluir.destroy()
+
+    global window_animal_deletar
+    window_animal_deletar = Tk()
+
+    window_animal_deletar.title("The Gurizes Development LTDA - Painel de Exclusão: FUNCIONÁRIO")
+    window_animal_deletar.geometry("900x600")
+    window_animal_deletar.resizable(width=False,height=False)
+    window_animal_deletar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_deletar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_deletar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    id_funcionario_label = Label(window_animal_deletar, text="ID do Funcionário: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    id_funcionario_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    id_funcionario_entry = Entry(window_animal_deletar, width=30)
+    id_funcionario_entry.pack()
+
+    bottom_frame = Frame(window_animal_deletar, width=900, height=100, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    submit_botao = Button(window_animal_deletar, text="DELETAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_del)
+    submit_botao.pack(pady=10)
+
+    window_animal_deletar.mainloop()
+
+def DEL_HABITAT():
+    def voltar():
+        window_animal_deletar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    def sql_animal_del(): # funcao sempre em cima
+        id_habitat = id_habitat_entry.get()
+
+        comando_sql = f'''UPDATE habitat SET Tipo = "NULL", Tamanho = 0, Clima = "NULL" WHERE Id = {id_habitat}''' # como habitat serve como uma foreign key para outras tabelas, decidi apenas limpar os valores escrevendo "NULL" 
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
+    window_excluir.destroy()
+
+    global window_animal_deletar
+    window_animal_deletar = Tk()
+
+    window_animal_deletar.title("The Gurizes Development LTDA - Painel de Exclusão: HABITAT")
+    window_animal_deletar.geometry("900x600")
+    window_animal_deletar.resizable(width=False,height=False)
+    window_animal_deletar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_deletar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_deletar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    id_habitat_label = Label(window_animal_deletar, text="ID do Habitat: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    id_habitat_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    id_habitat_entry = Entry(window_animal_deletar, width=30)
+    id_habitat_entry.pack()
+
+    bottom_frame = Frame(window_animal_deletar, width=900, height=100, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    submit_botao = Button(window_animal_deletar, text="DELETAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_del)
+    submit_botao.pack(pady=10)
+
+    window_animal_deletar.mainloop()
+
+def DEL_INGRESSO():
+    def voltar():
+        window_animal_deletar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    def sql_animal_del(): # funcao sempre em cima
+        id_ingresso = id_ingresso_entry.get()
+
+        comando_sql = f'''UPDATE ingressos SET Tipo = "NULL", Preco = 0, Datavalidade = "1000-01-01", Quantidade = 0, Desconto = 0 WHERE Id = {id_ingresso}''' # como ingressos também serve como uma foreign key para outras tabelas, decidi apenas limpar os valores
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
+    window_excluir.destroy()
+
+    global window_animal_deletar
+    window_animal_deletar = Tk()
+
+    window_animal_deletar.title("The Gurizes Development LTDA - Painel de Exclusão: INGRESSO")
+    window_animal_deletar.geometry("900x600")
+    window_animal_deletar.resizable(width=False,height=False)
+    window_animal_deletar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_deletar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_deletar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    id_ingresso_label = Label(window_animal_deletar, text="ID do Ingresso: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    id_ingresso_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    id_ingresso_entry = Entry(window_animal_deletar, width=30)
+    id_ingresso_entry.pack()
+
+    bottom_frame = Frame(window_animal_deletar, width=900, height=100, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    submit_botao = Button(window_animal_deletar, text="DELETAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_del)
+    submit_botao.pack(pady=10)
+
+    window_animal_deletar.mainloop()
+
+def DEL_LOJA():
+    def voltar():
+        window_animal_deletar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    def sql_animal_del(): # funcao sempre em cima
+        id_loja = id_loja_entry.get()
+
+        comando_sql = f'''DELETE FROM lojas WHERE Id = {id_loja}'''
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
+    window_excluir.destroy()
+
+    global window_animal_deletar
+    window_animal_deletar = Tk()
+
+    window_animal_deletar.title("The Gurizes Development LTDA - Painel de Exclusão: LOJA")
+    window_animal_deletar.geometry("900x600")
+    window_animal_deletar.resizable(width=False,height=False)
+    window_animal_deletar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_deletar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_deletar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    id_loja_label = Label(window_animal_deletar, text="ID da Loja: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    id_loja_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    id_loja_entry = Entry(window_animal_deletar, width=30)
+    id_loja_entry.pack()
+
+    bottom_frame = Frame(window_animal_deletar, width=900, height=100, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    submit_botao = Button(window_animal_deletar, text="DELETAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_del)
+    submit_botao.pack(pady=10)
+
+    window_animal_deletar.mainloop()
+
+def DEL_VISITANTE():
+    def voltar():
+        window_animal_deletar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    def sql_animal_del(): # funcao sempre em cima
+        id_visitante = id_visitante_entry.get()
+
+        comando_sql = f'''DELETE FROM visitantes WHERE Id = {id_visitante}'''
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
+    window_excluir.destroy()
+
+    global window_animal_deletar
+    window_animal_deletar = Tk()
+
+    window_animal_deletar.title("The Gurizes Development LTDA - Painel de Exclusão: VISITANTE")
+    window_animal_deletar.geometry("900x600")
+    window_animal_deletar.resizable(width=False,height=False)
+    window_animal_deletar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_deletar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_deletar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    id_visitante_label = Label(window_animal_deletar, text="ID do Visitante: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    id_visitante_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    id_visitante_entry = Entry(window_animal_deletar, width=30)
+    id_visitante_entry.pack()
+
+    bottom_frame = Frame(window_animal_deletar, width=900, height=100, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    submit_botao = Button(window_animal_deletar, text="DELETAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_del)
+    submit_botao.pack(pady=10)
+
+    window_animal_deletar.mainloop()
 
 main_window()
