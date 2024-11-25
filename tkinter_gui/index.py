@@ -1,6 +1,8 @@
 # IMPORT DAS BIBLIOTECAS
 from tkinter import *
 from tkinter import messagebox
+from tkinter import ttk
+import tkinter as tk
 import mysql.connector # importa a função de import do conector mysql
 
 conexao_banco = mysql.connector.connect( # especifica a conexão com o database determinado
@@ -213,6 +215,7 @@ def abrir_pesquisar ():
 
     window.destroy()
 
+    global window_pesquisar
     window_pesquisar = Tk()
 
     window_pesquisar.title("The Gurizes Development LTDA - Painel de Pesquisa")
@@ -238,17 +241,17 @@ def abrir_pesquisar ():
     menu_label = Label(window_pesquisar, text="O QUE VOCÊ DESEJA PESQUISAR?", font=("Century Gothic", 20, "bold"), width=30 , bg="darkorange", fg="black")
     menu_label.pack(pady=(30,0)) # utilizei somente o pack() para centralizar / padding Y, primeiro valor top, segundo valor bottom
 
-    animal_button = Button(window_pesquisar, text="ANIMAL", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="")
+    animal_button = Button(window_pesquisar, text="ANIMAL", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=PES_ANIMAL)
     animal_button.pack(pady=5)
-    func_button = Button(window_pesquisar, text="FUNCIONÁRIO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_FUNCIONARIO
+    func_button = Button(window_pesquisar, text="FUNCIONÁRIO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=PES_FUNCIONARIO) # CAD_FUNCIONARIO
     func_button.pack(pady=5)
-    hab_button = Button(window_pesquisar, text="HABITAT", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_HABITAT
+    hab_button = Button(window_pesquisar, text="HABITAT", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=PES_HABITAT) # CAD_HABITAT
     hab_button.pack(pady=5)
-    ing_button = Button(window_pesquisar, text="INGRESSO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_INGRESSO
+    ing_button = Button(window_pesquisar, text="INGRESSO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=PES_INGRESSOS) # CAD_INGRESSO
     ing_button.pack(pady=5)
-    loja_button = Button(window_pesquisar, text="LOJA", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_LOJA
+    loja_button = Button(window_pesquisar, text="LOJA", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=PES_LOJA) # CAD_LOJA
     loja_button.pack(pady=5)
-    vis_button = Button(window_pesquisar, text="VISITANTE", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_VISITANTE
+    vis_button = Button(window_pesquisar, text="VISITANTE", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=PES_VISITANTE) # CAD_VISITANTE
     vis_button.pack(pady=5)
 
     bottom_frame = Frame(window_pesquisar, width=900, height=70, bg="black", relief="raised")
@@ -1454,5 +1457,403 @@ def DEL_VISITANTE():
     submit_botao.pack(pady=10)
 
     window_animal_deletar.mainloop()
+
+# JANELAS SQL INSERTION - PESQUISAR
+
+def PES_ANIMAL():
+    
+    def voltar():
+        window_animal_pesquisar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    window_pesquisar.destroy()
+
+    global window_animal_pesquisar
+    window_animal_pesquisar = Tk()
+
+    window_animal_pesquisar.title("The Gurizes Development LTDA - Painel de Pesquisa: ANIMAL")
+    window_animal_pesquisar.geometry("900x600")
+    window_animal_pesquisar.resizable(width=False,height=False)
+    window_animal_pesquisar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_pesquisar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    # TREEVIEW
+    comando_sql = f'''SELECT * FROM animais'''
+    cursor.execute(comando_sql)
+    
+    tree = ttk.Treeview(window_animal_pesquisar, show='headings')
+    style = ttk.Style()
+    style.configure("Treeview", background="black", foreground="darkorange")
+
+
+    tree['columns'] = ('Id','Nome', 'Especie', 'Genero', 'Datanasc', 'Origem', 'Saúde', 'Alimentacao', 'Idhabitat')
+
+    # Formatação das colunas
+    tree.column("Id", anchor=tk.CENTER, width=50)
+    tree.column("Nome", anchor=tk.CENTER, width=80)
+    tree.column("Especie", anchor=tk.CENTER, width=60)
+    tree.column("Genero", anchor=tk.CENTER, width=50)
+    tree.column("Datanasc", anchor=tk.CENTER, width=60)
+    tree.column("Origem", anchor=tk.CENTER, width=60)
+    tree.column("Saúde", anchor=tk.CENTER, width=80)
+    tree.column("Alimentacao", anchor=tk.CENTER, width=80)
+    tree.column("Idhabitat", anchor=tk.CENTER, width=50)
+
+    # Cabeçalho das colunas
+    tree.heading("Id", text="ID_Animal", anchor=tk.CENTER)
+    tree.heading("Nome", text="Nome", anchor=tk.CENTER)
+    tree.heading("Especie", text="Espécie", anchor=tk.CENTER)
+    tree.heading("Genero", text="Gênero", anchor=tk.CENTER)
+    tree.heading("Datanasc", text="Data Nasc.", anchor=tk.CENTER)
+    tree.heading("Origem", text="Origem", anchor=tk.CENTER)
+    tree.heading("Saúde", text="Saúde", anchor=tk.CENTER)
+    tree.heading("Alimentacao", text="Alimentação", anchor=tk.CENTER)
+    tree.heading("Idhabitat", text="ID_Habitat", anchor=tk.CENTER)
+
+    for row in cursor:
+        tree.insert('','end',values=row)
+
+    tree.pack(pady=50)
+
+    bottom_frame = Frame(window_animal_pesquisar, width=900, height=100, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    button_volt = Button(bottom_frame, text="VOLTAR PARA O MENU", font=("Century Gothic", 20), bg="darkorange", fg="black", command=voltar)
+    button_volt.place(x=300, y=20)
+
+    window_animal_pesquisar.mainloop()
+
+def PES_FUNCIONARIO():
+    
+    def voltar():
+        window_animal_pesquisar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    window_pesquisar.destroy()
+
+    global window_animal_pesquisar
+    window_animal_pesquisar = Tk()
+
+    window_animal_pesquisar.title("The Gurizes Development LTDA - Painel de Pesquisa: FUNCIONÁRIO")
+    window_animal_pesquisar.geometry("900x600")
+    window_animal_pesquisar.resizable(width=False,height=False)
+    window_animal_pesquisar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_pesquisar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    # TREEVIEW
+    comando_sql = f'''SELECT * FROM funcionarios'''
+    cursor.execute(comando_sql)
+    
+    tree = ttk.Treeview(window_animal_pesquisar, show='headings')
+    style = ttk.Style()
+    style.configure("Treeview", background="black", foreground="darkorange")
+
+
+    tree['columns'] = ('Id','Nome', 'Cargo', 'Datacontratacao', 'Email', 'Telefone')
+
+    # Formatação das colunas
+    tree.column("Id", anchor=tk.CENTER, width=30)
+    tree.column("Nome", anchor=tk.CENTER, width=80)
+    tree.column("Cargo", anchor=tk.CENTER, width=60)
+    tree.column("Datacontratacao", anchor=tk.CENTER, width=50)
+    tree.column("Email", anchor=tk.CENTER, width=60)
+    tree.column("Telefone", anchor=tk.CENTER, width=60)
+
+    # Cabeçalho das colunas
+    tree.heading("Id", text="ID", anchor=tk.CENTER)
+    tree.heading("Nome", text="Nome", anchor=tk.CENTER)
+    tree.heading("Cargo", text="Cargo", anchor=tk.CENTER)
+    tree.heading("Datacontratacao", text="Data Contr.", anchor=tk.CENTER)
+    tree.heading("Email", text="E-mail", anchor=tk.CENTER)
+    tree.heading("Telefone", text="Telefone", anchor=tk.CENTER)
+
+    for row in cursor:
+        tree.insert('','end',values=row)
+
+    tree.pack(pady=50)
+
+    bottom_frame = Frame(window_animal_pesquisar, width=900, height=100, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    button_volt = Button(bottom_frame, text="VOLTAR PARA O MENU", font=("Century Gothic", 20), bg="darkorange", fg="black", command=voltar)
+    button_volt.place(x=300, y=20)
+
+    window_animal_pesquisar.mainloop()
+
+def PES_HABITAT():
+    
+    def voltar():
+        window_animal_pesquisar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    window_pesquisar.destroy()
+
+    global window_animal_pesquisar
+    window_animal_pesquisar = Tk()
+
+    window_animal_pesquisar.title("The Gurizes Development LTDA - Painel de Pesquisa: HABITAT")
+    window_animal_pesquisar.geometry("900x600")
+    window_animal_pesquisar.resizable(width=False,height=False)
+    window_animal_pesquisar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_pesquisar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    # TREEVIEW
+    comando_sql = f'''SELECT * FROM habitat'''
+    cursor.execute(comando_sql)
+    
+    tree = ttk.Treeview(window_animal_pesquisar, show='headings')
+    style = ttk.Style()
+    style.configure("Treeview", background="black", foreground="darkorange")
+
+
+    tree['columns'] = ('Id','Tipo', 'Tamanho', 'Clima')
+
+    # Formatação das colunas
+    tree.column("Id", anchor=tk.CENTER, width=30)
+    tree.column("Tipo", anchor=tk.CENTER, width=80)
+    tree.column("Tamanho", anchor=tk.CENTER, width=60)
+    tree.column("Clima", anchor=tk.CENTER, width=50)
+
+    # Cabeçalho das colunas
+    tree.heading("Id", text="ID", anchor=tk.CENTER)
+    tree.heading("Tipo", text="Tipo", anchor=tk.CENTER)
+    tree.heading("Tamanho", text="Tamanho", anchor=tk.CENTER)
+    tree.heading("Clima", text="Clima", anchor=tk.CENTER)
+
+    for row in cursor:
+        tree.insert('','end',values=row)
+
+    tree.pack(pady=50)
+
+    bottom_frame = Frame(window_animal_pesquisar, width=900, height=100, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    button_volt = Button(bottom_frame, text="VOLTAR PARA O MENU", font=("Century Gothic", 20), bg="darkorange", fg="black", command=voltar)
+    button_volt.place(x=300, y=20)
+
+    window_animal_pesquisar.mainloop()
+
+def PES_INGRESSOS():
+    
+    def voltar():
+        window_animal_pesquisar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    window_pesquisar.destroy()
+
+    global window_animal_pesquisar
+    window_animal_pesquisar = Tk()
+
+    window_animal_pesquisar.title("The Gurizes Development LTDA - Painel de Pesquisa: INGRESSO")
+    window_animal_pesquisar.geometry("900x600")
+    window_animal_pesquisar.resizable(width=False,height=False)
+    window_animal_pesquisar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_pesquisar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    # TREEVIEW
+    comando_sql = f'''SELECT * FROM ingressos'''
+    cursor.execute(comando_sql)
+    
+    tree = ttk.Treeview(window_animal_pesquisar, show='headings')
+    style = ttk.Style()
+    style.configure("Treeview", background="black", foreground="darkorange")
+
+
+    tree['columns'] = ('Id','Tipo', 'Preco', 'Datavalidade', 'Quantidade', 'Desconto')
+
+    # Formatação das colunas
+    tree.column("Id", anchor=tk.CENTER, width=30)
+    tree.column("Tipo", anchor=tk.CENTER, width=80)
+    tree.column("Preco", anchor=tk.CENTER, width=60)
+    tree.column("Datavalidade", anchor=tk.CENTER, width=50)
+    tree.column("Quantidade", anchor=tk.CENTER, width=60)
+    tree.column("Desconto", anchor=tk.CENTER, width=60)
+
+    # Cabeçalho das colunas
+    tree.heading("Id", text="ID", anchor=tk.CENTER)
+    tree.heading("Tipo", text="Tipo", anchor=tk.CENTER)
+    tree.heading("Preco", text="Preco", anchor=tk.CENTER)
+    tree.heading("Datavalidade", text="Data Val.", anchor=tk.CENTER)
+    tree.heading("Quantidade", text="Quantidade", anchor=tk.CENTER)
+    tree.heading("Desconto", text="Desconto", anchor=tk.CENTER)
+
+    for row in cursor:
+        tree.insert('','end',values=row)
+
+    tree.pack(pady=50)
+
+    bottom_frame = Frame(window_animal_pesquisar, width=900, height=100, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    button_volt = Button(bottom_frame, text="VOLTAR PARA O MENU", font=("Century Gothic", 20), bg="darkorange", fg="black", command=voltar)
+    button_volt.place(x=300, y=20)
+
+    window_animal_pesquisar.mainloop()
+
+def PES_LOJA():
+    
+    def voltar():
+        window_animal_pesquisar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    window_pesquisar.destroy()
+
+    global window_animal_pesquisar
+    window_animal_pesquisar = Tk()
+
+    window_animal_pesquisar.title("The Gurizes Development LTDA - Painel de Pesquisa: LOJA")
+    window_animal_pesquisar.geometry("900x600")
+    window_animal_pesquisar.resizable(width=False,height=False)
+    window_animal_pesquisar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_pesquisar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    # TREEVIEW
+    comando_sql = f'''SELECT * FROM lojas'''
+    cursor.execute(comando_sql)
+    
+    tree = ttk.Treeview(window_animal_pesquisar, show='headings')
+    style = ttk.Style()
+    style.configure("Treeview", background="black", foreground="darkorange")
+
+
+    tree['columns'] = ('Id','Nome', 'Servico', 'Horario', 'Receita', 'Email', 'Telefone')
+
+    # Formatação das colunas
+    tree.column("Id", anchor=tk.CENTER, width=30)
+    tree.column("Nome", anchor=tk.CENTER, width=80)
+    tree.column("Servico", anchor=tk.CENTER, width=60)
+    tree.column("Horario", anchor=tk.CENTER, width=50)
+    tree.column("Receita", anchor=tk.CENTER, width=60)
+    tree.column("Email", anchor=tk.CENTER, width=60)
+    tree.column("Telefone", anchor=tk.CENTER, width=60)
+
+    # Cabeçalho das colunas
+    tree.heading("Id", text="ID", anchor=tk.CENTER)
+    tree.heading("Nome", text="Nome", anchor=tk.CENTER)
+    tree.heading("Servico", text="Servico", anchor=tk.CENTER)
+    tree.heading("Horario", text="Horário Func.", anchor=tk.CENTER)
+    tree.heading("Receita", text="Receita", anchor=tk.CENTER)
+    tree.heading("Email", text="E-mail", anchor=tk.CENTER)
+    tree.heading("Telefone", text="Telefone", anchor=tk.CENTER)
+
+    for row in cursor:
+        tree.insert('','end',values=row)
+
+    tree.pack(pady=50)
+
+    bottom_frame = Frame(window_animal_pesquisar, width=900, height=100, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    button_volt = Button(bottom_frame, text="VOLTAR PARA O MENU", font=("Century Gothic", 20), bg="darkorange", fg="black", command=voltar)
+    button_volt.place(x=300, y=20)
+
+    window_animal_pesquisar.mainloop()
+
+def PES_VISITANTE():
+    
+    def voltar():
+        window_animal_pesquisar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    window_pesquisar.destroy()
+
+    global window_animal_pesquisar
+    window_animal_pesquisar = Tk()
+
+    window_animal_pesquisar.title("The Gurizes Development LTDA - Painel de Pesquisa: VISITANTE")
+    window_animal_pesquisar.geometry("900x600")
+    window_animal_pesquisar.resizable(width=False,height=False)
+    window_animal_pesquisar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_pesquisar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    # TREEVIEW
+    comando_sql = f'''SELECT * FROM visitantes'''
+    cursor.execute(comando_sql)
+    
+    tree = ttk.Treeview(window_animal_pesquisar, show='headings')
+    style = ttk.Style()
+    style.configure("Treeview", background="black", foreground="darkorange")
+
+
+    tree['columns'] = ('Id','Nome', 'Datavisita', 'Idingresso')
+
+    # Formatação das colunas
+    tree.column("Id", anchor=tk.CENTER, width=30)
+    tree.column("Nome", anchor=tk.CENTER, width=80)
+    tree.column("Datavisita", anchor=tk.CENTER, width=60)
+    tree.column("Idingresso", anchor=tk.CENTER, width=50)
+
+    # Cabeçalho das colunas
+    tree.heading("Id", text="ID", anchor=tk.CENTER)
+    tree.heading("Nome", text="Nome", anchor=tk.CENTER)
+    tree.heading("Datavisita", text="Data Vis.", anchor=tk.CENTER)
+    tree.heading("Idingresso", text="ID Ing.", anchor=tk.CENTER)
+
+    for row in cursor:
+        tree.insert('','end',values=row)
+
+    tree.pack(pady=50)
+
+    bottom_frame = Frame(window_animal_pesquisar, width=900, height=100, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    button_volt = Button(bottom_frame, text="VOLTAR PARA O MENU", font=("Century Gothic", 20), bg="darkorange", fg="black", command=voltar)
+    button_volt.place(x=300, y=20)
+
+    window_animal_pesquisar.mainloop()
 
 main_window()
