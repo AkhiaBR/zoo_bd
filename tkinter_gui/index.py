@@ -137,17 +137,17 @@ def abrir_alterar ():
     menu_label = Label(window_alteracao, text="O QUE VOCÊ DESEJA ALTERAR?", font=("Century Gothic", 20, "bold"), width=30 , bg="darkorange", fg="black")
     menu_label.pack(pady=(30,0)) # utilizei somente o pack() para centralizar / padding Y, primeiro valor top, segundo valor bottom
 
-    animal_button = Button(window_alteracao, text="ANIMAL", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="")
+    animal_button = Button(window_alteracao, text="ANIMAL", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=ALT_ANIMAL) # ALT_ANIMAL
     animal_button.pack(pady=5)
-    func_button = Button(window_alteracao, text="FUNCIONÁRIO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_FUNCIONARIO
+    func_button = Button(window_alteracao, text="FUNCIONÁRIO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=ALT_FUNCIONARIO) # ALT_FUNCIONARIO
     func_button.pack(pady=5)
-    hab_button = Button(window_alteracao, text="HABITAT", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_HABITAT
+    hab_button = Button(window_alteracao, text="HABITAT", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=ALT_HABITAT) # ALT_HABITAT
     hab_button.pack(pady=5)
-    ing_button = Button(window_alteracao, text="INGRESSO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_INGRESSO
+    ing_button = Button(window_alteracao, text="INGRESSO", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=ALT_INGRESSO) # ALT_INGRESSO
     ing_button.pack(pady=5)
-    loja_button = Button(window_alteracao, text="LOJA", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_LOJA
+    loja_button = Button(window_alteracao, text="LOJA", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=ALT_LOJA) # ALT_LOJA
     loja_button.pack(pady=5)
-    vis_button = Button(window_alteracao, text="VISITANTE", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command="") # CAD_VISITANTE
+    vis_button = Button(window_alteracao, text="VISITANTE", font=("Century Gothic", 15, "bold"), width=20 , bg="black", fg="darkorange", relief="raised", command=ALT_VISITANTE) # ALT_VISITANTE
     vis_button.pack(pady=5)
 
     bottom_frame = Frame(window_alteracao, width=900, height=70, bg="black", relief="raised")
@@ -785,5 +785,354 @@ def CAD_VISITANTE():
     submit_botao.pack(pady=10)
 
     window_animal_criar.mainloop()
+
+# JANELAS SQL INSERTION - ALTERAR
+def ALT_ANIMAL():
+    def voltar():
+        window_animal_alterar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    def sql_animal_alt(): # sempre em cima
+        id_animal = id_animal_entry.get()
+        novasaude = saude_entry.get()
+
+        comando_sql = f'''UPDATE animais SET `Saúde` = "{novasaude}" WHERE Id = {id_animal}'''
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
+    window_alteracao.destroy()
+
+    global window_animal_alterar
+    window_animal_alterar = Tk()
+
+    window_animal_alterar.title("The Gurizes Development LTDA - Painel de Alteração: ANIMAL")
+    window_animal_alterar.geometry("900x600")
+    window_animal_alterar.resizable(width=False,height=False)
+    window_animal_alterar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_alterar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_alterar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    id_animal_label = Label(window_animal_alterar, text="ID do Animal: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    id_animal_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    id_animal_entry = Entry(window_animal_alterar, width=30)
+    id_animal_entry.pack()
+    saude_label = Label(window_animal_alterar, text="Atualização da Saúde: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    saude_label.pack()  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    saude_entry = Entry(window_animal_alterar, width=30)
+    saude_entry.pack()
+
+    bottom_frame = Frame(window_animal_alterar, width=900, height=70, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    submit_botao = Button(window_animal_alterar, text="ALTERAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_alt)
+    submit_botao.pack(pady=10)
+
+    window_animal_alterar.mainloop()
+
+def ALT_FUNCIONARIO():
+    def voltar():
+        window_animal_alterar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    def sql_animal_alt(): # sempre em cima
+        id_funcionario = id_funcionario_entry.get()
+        novocargo = cargo_entry.get()
+
+        comando_sql = f'''UPDATE funcionarios SET `Cargo` = "{novocargo}" WHERE Id = {id_funcionario}'''
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
+    window_alteracao.destroy()
+
+    global window_animal_alterar
+    window_animal_alterar = Tk()
+
+    window_animal_alterar.title("The Gurizes Development LTDA - Painel de Alteração: FUNCIONÁRIO")
+    window_animal_alterar.geometry("900x600")
+    window_animal_alterar.resizable(width=False,height=False)
+    window_animal_alterar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_alterar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_alterar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    id_funcionario_label = Label(window_animal_alterar, text="ID do Funcionário: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    id_funcionario_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    id_funcionario_entry = Entry(window_animal_alterar, width=30)
+    id_funcionario_entry.pack()
+    cargo_label = Label(window_animal_alterar, text="Atualização do Cargo: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    cargo_label.pack()  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    cargo_entry = Entry(window_animal_alterar, width=30)
+    cargo_entry.pack()
+
+    bottom_frame = Frame(window_animal_alterar, width=900, height=70, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    submit_botao = Button(window_animal_alterar, text="ALTERAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_alt)
+    submit_botao.pack(pady=10)
+
+    window_animal_alterar.mainloop()
+
+def ALT_HABITAT():
+    def voltar():
+        window_animal_alterar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    def sql_animal_alt(): # sempre em cima
+        id_habitat = id_habitat_entry.get()
+        novoclima = clima_entry.get()
+
+        comando_sql = f'''UPDATE habitat SET `Clima` = "{novoclima}" WHERE Id = {id_habitat}'''
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
+    window_alteracao.destroy()
+
+    global window_animal_alterar
+    window_animal_alterar = Tk()
+
+    window_animal_alterar.title("The Gurizes Development LTDA - Painel de Alteração: HABITAT")
+    window_animal_alterar.geometry("900x600")
+    window_animal_alterar.resizable(width=False,height=False)
+    window_animal_alterar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_alterar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_alterar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    id_habitat_label = Label(window_animal_alterar, text="ID do Habitat: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    id_habitat_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    id_habitat_entry = Entry(window_animal_alterar, width=30)
+    id_habitat_entry.pack()
+    clima_label = Label(window_animal_alterar, text="Atualização do Clima: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    clima_label.pack()  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    clima_entry = Entry(window_animal_alterar, width=30)
+    clima_entry.pack()
+
+    bottom_frame = Frame(window_animal_alterar, width=900, height=70, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    submit_botao = Button(window_animal_alterar, text="ALTERAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_alt)
+    submit_botao.pack(pady=10)
+
+    window_animal_alterar.mainloop()
+
+def ALT_INGRESSO():
+    def voltar():
+        window_animal_alterar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    def sql_animal_alt(): # sempre em cima
+        id_ingresso = id_ingresso_entry.get()
+        novopreco = novopreco_entry.get()
+
+        comando_sql = f'''UPDATE ingressos SET `Preco` = "{novopreco}" WHERE Id = {id_ingresso}'''
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
+    window_alteracao.destroy()
+
+    global window_animal_alterar
+    window_animal_alterar = Tk()
+
+    window_animal_alterar.title("The Gurizes Development LTDA - Painel de Alteração: INGRESSO")
+    window_animal_alterar.geometry("900x600")
+    window_animal_alterar.resizable(width=False,height=False)
+    window_animal_alterar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_alterar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_alterar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    id_ingresso_label = Label(window_animal_alterar, text="ID do Ingresso: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    id_ingresso_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    id_ingresso_entry = Entry(window_animal_alterar, width=30)
+    id_ingresso_entry.pack()
+    novopreco_label = Label(window_animal_alterar, text="Atualização do Preco: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    novopreco_label.pack()  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    novopreco_entry = Entry(window_animal_alterar, width=30)
+    novopreco_entry.pack()
+
+    bottom_frame = Frame(window_animal_alterar, width=900, height=70, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    submit_botao = Button(window_animal_alterar, text="ALTERAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_alt)
+    submit_botao.pack(pady=10)
+
+    window_animal_alterar.mainloop()
+
+def ALT_LOJA():
+    def voltar():
+        window_animal_alterar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    def sql_animal_alt(): # sempre em cima
+        id_loja = id_loja_entry.get()
+        nova_receita = nova_receita_entry.get()
+
+        comando_sql = f'''UPDATE lojas SET `Receita` = "{nova_receita}" WHERE Id = {id_loja}'''
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
+    window_alteracao.destroy()
+
+    global window_animal_alterar
+    window_animal_alterar = Tk()
+
+    window_animal_alterar.title("The Gurizes Development LTDA - Painel de Alteração: LOJA")
+    window_animal_alterar.geometry("900x600")
+    window_animal_alterar.resizable(width=False,height=False)
+    window_animal_alterar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_alterar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_alterar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    id_loja_label = Label(window_animal_alterar, text="ID da Loja: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    id_loja_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    id_loja_entry = Entry(window_animal_alterar, width=30)
+    id_loja_entry.pack()
+    nova_receita_label = Label(window_animal_alterar, text="Atualização da Receita: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    nova_receita_label.pack()  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    nova_receita_entry = Entry(window_animal_alterar, width=30)
+    nova_receita_entry.pack()
+
+    bottom_frame = Frame(window_animal_alterar, width=900, height=70, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    submit_botao = Button(window_animal_alterar, text="ALTERAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_alt)
+    submit_botao.pack(pady=10)
+
+    window_animal_alterar.mainloop()
+
+def ALT_VISITANTE():
+    def voltar():
+        window_animal_alterar.destroy()
+        main_window() # se tentar voltar para abrir_cadastro(), vai dar erro pois a def abrir_cadastro() vai tentar deletar a main_window, que já está apagada pois você já a apagou abrindo a def CAD_ANIMAL
+
+    def sql_animal_alt(): # sempre em cima
+        id_visitante = id_visitante_entry.get()
+        nova_data = nova_data_entry.get()
+
+        comando_sql = f'''UPDATE visitantes SET `Datavisita` = "{nova_data}" WHERE Id = {id_visitante}'''
+
+        cursor.execute(comando_sql)
+        conexao_banco.commit()
+
+        voltar()
+
+    window_alteracao.destroy()
+
+    global window_animal_alterar
+    window_animal_alterar = Tk()
+
+    window_animal_alterar.title("The Gurizes Development LTDA - Painel de Alteração: VISITANTE")
+    window_animal_alterar.geometry("900x600")
+    window_animal_alterar.resizable(width=False,height=False)
+    window_animal_alterar.configure(background="darkorange")
+
+    arca_logo = PhotoImage(file="tkinter_gui/images/arca_white.png")
+    top_frame = Frame(window_animal_alterar, width=900, height=150, bg="black", relief="raised")
+    top_frame.pack(side=TOP)
+
+    logo_label = Label(top_frame, image=arca_logo, bg="black")
+    logo_label.place(x=40, y=20)
+
+    title_label = Label(top_frame, text="ZOOLÓGICO ARCA DE NOÉ", font=("Century Gothic", 20), bg="black", fg="white")
+    title_label.place(x=280, y=55)
+
+    back_image = PhotoImage(file="tkinter_gui/images/back_20.png")
+
+    back_label = Button(window_animal_alterar, image=back_image, bg="darkorange", command=voltar)
+    back_label.place(x=40, y=180)
+
+    id_visitante_label = Label(window_animal_alterar, text="ID do Visitante: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    id_visitante_label.pack(pady=(8,0))  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    id_visitante_entry = Entry(window_animal_alterar, width=30)
+    id_visitante_entry.pack()
+    nova_data_label = Label(window_animal_alterar, text="Atualização da Data de Visita: ", font=("Century Gothic", 8, "bold"), bg="darkorange", fg="black")
+    nova_data_label.pack()  # utilizar somente o pack(y1,y2) para centralizar / padding Y, primeiro valor top, segundo valor bottom
+    nova_data_entry = Entry(window_animal_alterar, width=30)
+    nova_data_entry.pack()
+
+    bottom_frame = Frame(window_animal_alterar, width=900, height=70, bg="black", relief="raised")
+    bottom_frame.pack(side=BOTTOM)
+
+    submit_botao = Button(window_animal_alterar, text="ALTERAR", font=("Century Gothic", 10, "bold"), width=15 , bg="black", fg="darkorange", relief="raised", command=sql_animal_alt)
+    submit_botao.pack(pady=10)
+
+    window_animal_alterar.mainloop()
 
 main_window()

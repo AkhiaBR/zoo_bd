@@ -62,9 +62,10 @@ def cadastrar():
         datavisita = input("Data da Visita ( Dia-Mês-Ano): ")
         idingresso = int(input("ID do Ingresso: "))
         receita = float(input("Receita: "))
-
-        comando_sql = f'''INSERT INTO visitantes (Nome, Datavisita, Idingresso) 
-                          VALUES ("{nome}", "{datavisita}", {idingresso})'''
+        email = input("Email: ")
+        telefone = int(input("Telefone: "))
+        comando_sql = f'''INSERT INTO visitantes (Nome, Datavisita, Idingresso, Receita, Email, Telefone) 
+                          VALUES ("{nome}", "{datavisita}", {idingresso}, {receita}, "{email}", {telefone})'''
     else:
         print("Opção inválida.")
         return
