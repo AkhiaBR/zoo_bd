@@ -7,7 +7,7 @@
 🌟 Funcionalidades 🌟
 - 🦁 Gerenciamento de Animais: Cadastro, edição e exclusão de animais
 - 🏞️ Gerenciamento de Habitats: Cadastro, edição e exclusão de habitats
-- 🔍 Pesquisa de Animais: Filtro por nome, espécie, gênero e outros critérios
+- 🔍 Pesquisa de Animais: Mostra os animais cadastrados e suas informações
 - 💻 Interface Gráfica: Tkinter para uma experiência usuário amigável
 
 🛠️ Recursos 🛠️
